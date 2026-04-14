@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <string.h>
+
 int main(int argc, char *argv[])
 { 
     int fd;
@@ -21,12 +23,29 @@ int main(int argc, char *argv[])
 
     size_t ret;
     char buf[1024] = {0};
+
+    lseek(fd,2,SEEK_SET);
+
     ret = read(fd,buf,8);
     if(ret == -1){
+
         perror("read fail\n");
         return -1;
+        }
+
+        printf("%s\n",buf);
+
+
+        lseek(fd,-2,SEEK_END);
+
+        char buf1[64] = "hfdjsfojofjdiow";
+
+        size_t ret1;
+        ret1 = write(fd,buf1,strlen(buf1));
+        if(ret1 == 1){
+            perror("write fail\n");
+            return -1;
     }
-    printf("%s\n",buf);
 
     close(fd);
 
